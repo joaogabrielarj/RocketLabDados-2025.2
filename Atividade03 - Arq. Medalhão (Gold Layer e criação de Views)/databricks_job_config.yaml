@@ -1,0 +1,51 @@
+resources:
+  jobs:
+    pipeline_arquitetura_medalhao:
+      name: pipeline_arquitetura_medalhao
+      tasks:
+        - task_key: extracao_bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/joaogabrielaraujo30@gmail.com/RocketLabDados-2025.2/Atividade02
+              - Arq. Medalhão/Atividade2_land_to_bronze.ipynb
+            source: WORKSPACE
+        - task_key: conversao_silver
+          depends_on:
+            - task_key: extracao_bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/joaogabrielaraujo30@gmail.com/RocketLabDados-2025.2/Atividade02
+              - Arq. Medalhão/Atividade2_bronze_to_silver.ipynb
+            source: WORKSPACE
+        - task_key: gold_projeto1_vendas_localidade
+          depends_on:
+            - task_key: conversao_silver
+          notebook_task:
+            notebook_path: /Workspace/Users/joaogabrielaraujo30@gmail.com/RocketLabDados-2025.2/Atividade03
+              - Arq. Medalhão (Gold Layer e criação de
+              Views)/Projeto1_Logistica_Vendas_Localidade
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_projeto2_atrasos
+          depends_on:
+            - task_key: conversao_silver
+          notebook_task:
+            notebook_path: /Workspace/Users/joaogabrielaraujo30@gmail.com/RocketLabDados-2025.2/Atividade03
+              - Arq. Medalhão (Gold Layer e criação de
+              Views)/Projeto2_Logistica_Atrasos_Entrega
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_projeto3_temporal
+          depends_on:
+            - task_key: conversao_silver
+          notebook_task:
+            notebook_path: /Workspace/Users/joaogabrielaraujo30@gmail.com/RocketLabDados-2025.2/Atividade03
+              - Arq. Medalhão (Gold Layer e criação de
+              Views)/Projeto3_Comercial_Vendas_Periodo
+            source: WORKSPACE
+          environment_key: Default
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "4"
+      performance_target: PERFORMANCE_OPTIMIZED
